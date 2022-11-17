@@ -16,15 +16,24 @@ const getFallbackHandlerTxData = (safeAddress: string): string => {
   const safeInstance = getGnosisSafeInstanceAt(safeAddress, LATEST_SAFE_VERSION)
 
   return hasSetFallbackHandler
-    ? safeInstance.methods.setFallbackHandler(fallbackHandlerAddress).encodeABI()
+    ? safeInstance.methods
+        .setFallbackHandler(fallbackHandlerAddress)
+        .encodeABI()
     : EMPTY_DATA
 }
 
-export const getUpgradeSafeTransactionHash = (safeAddress: string, safeCurrentVersion: string): string => {
+export const getUpgradeSafeTransactionHash = (
+  safeAddress: string,
+  safeCurrentVersion: string,
+): string => {
   const safeMasterContractAddress = getSafeMasterContractAddress()
   const safeInstance = getGnosisSafeInstanceAt(safeAddress, safeCurrentVersion)
   // @ts-expect-error this was removed in 1.3.0 but we need to support it for older safe versions
-  const updateSafeTxData = safeInstance.methods.changeMasterCopy(safeMasterContractAddress).encodeABI()
+  const updateSafeTxData = safeInstance.methods
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    //@ts-ignore
+    .changeMasterCopy(safeMasterContractAddress)
+    .encodeABI()
   const fallbackHandlerTxData = getFallbackHandlerTxData(safeAddress)
   const txs = [
     {
