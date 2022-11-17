@@ -1,4 +1,7 @@
-import { getSafeSingletonDeployment, getMultiSendCallOnlyDeployment } from '@gnosis.pm/safe-deployments'
+import {
+  getSafeSingletonDeployment,
+  getMultiSendCallOnlyDeployment,
+} from '@gton-capital/safe-deployments'
 import { AbiItem } from 'web3-utils'
 import Web3 from 'web3'
 
@@ -8,7 +11,8 @@ import { GnosisSafe } from 'src/types/contracts/gnosis_safe.d'
 import { MultiSend } from 'src/types/contracts/multi_send'
 
 const SAFE_MASTER_COPY_ADDRESS = '0x34CfAC646f301356fAa8B21e94227e3583Fe3F5F'
-const DEFAULT_FALLBACK_HANDLER_ADDRESS = '0xd5D82B6aDDc9027B22dCA772Aa68D5d74cdBdF44'
+const DEFAULT_FALLBACK_HANDLER_ADDRESS =
+  '0xd5D82B6aDDc9027B22dCA772Aa68D5d74cdBdF44'
 
 jest.mock('src/logic/contracts/safeContracts', () => ({
   getMultiSendCallOnlyContract: jest.fn(),
@@ -24,7 +28,9 @@ describe('Upgrade a < 1.3.0 Safe', () => {
     // Mock multisend contract instance
     const multiSendCallOnlyDeployment = getMultiSendCallOnlyDeployment()
     safeContracts.getMultiSendCallOnlyContract.mockReturnValue(
-      new web3.eth.Contract(multiSendCallOnlyDeployment?.abi as AbiItem[]) as unknown as MultiSend,
+      new web3.eth.Contract(
+        multiSendCallOnlyDeployment?.abi as AbiItem[],
+      ) as unknown as MultiSend,
     )
 
     // Mock safe contract instance
@@ -33,10 +39,16 @@ describe('Upgrade a < 1.3.0 Safe', () => {
     })
     const safeMasterContractAddress = SAFE_MASTER_COPY_ADDRESS
     const fallbackHandlerAddress = DEFAULT_FALLBACK_HANDLER_ADDRESS
-    const safeInstance = new web3.eth.Contract(safeSingletonDeployment?.abi as AbiItem[]) as unknown as GnosisSafe
+    const safeInstance = new web3.eth.Contract(
+      safeSingletonDeployment?.abi as AbiItem[],
+    ) as unknown as GnosisSafe
     //@ts-expect-error the method was removed in 1.3.0 contracts
-    const updateSafeTxData = safeInstance.methods.changeMasterCopy(safeMasterContractAddress).encodeABI()
-    const fallbackHandlerTxData = safeInstance.methods.setFallbackHandler(fallbackHandlerAddress).encodeABI()
+    const updateSafeTxData = safeInstance.methods
+      .changeMasterCopy(safeMasterContractAddress)
+      .encodeABI()
+    const fallbackHandlerTxData = safeInstance.methods
+      .setFallbackHandler(fallbackHandlerAddress)
+      .encodeABI()
     const txs = [
       {
         to: safeAddress,
