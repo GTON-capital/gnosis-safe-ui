@@ -42,7 +42,7 @@ describe.skip('Upgrade a < 1.3.0 Safe', () => {
     const safeInstance = new web3.eth.Contract(
       safeSingletonDeployment?.abi as AbiItem[],
     ) as unknown as GnosisSafe
-    //@ts-expect-error the method was removed in 1.3.0 contracts
+    // //@ts-expect-error the method was removed in 1.3.0 contracts
     const updateSafeTxData = safeInstance.methods
       //@ts-ignore
       .changeMasterCopy(safeMasterContractAddress)
