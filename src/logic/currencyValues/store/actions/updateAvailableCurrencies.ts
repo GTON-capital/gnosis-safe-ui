@@ -3,9 +3,8 @@ import { ThunkDispatch } from 'redux-thunk'
 import { AppReduxState } from 'src/store'
 import { AvailableCurrenciesPayload } from 'src/logic/currencyValues/store/reducer/currencyValues'
 import { setAvailableCurrencies } from 'src/logic/currencyValues/store/actions/setAvailableCurrencies'
-// import { getFiatCurrencies } from '@gnosis.pm/safe-react-gateway-sdk'
+import { getFiatCurrencies } from '@gnosis.pm/safe-react-gateway-sdk'
 import { Errors, logError } from 'src/logic/exceptions/CodedException'
-import availableCurrencies from './fiatCurrencies.mock.json'
 
 export const updateAvailableCurrencies =
   () =>
@@ -17,7 +16,7 @@ export const updateAvailableCurrencies =
     >,
   ): Promise<void> => {
     try {
-      // const availableCurrencies = await getFiatCurrencies()
+      const availableCurrencies = await getFiatCurrencies()
       dispatch(setAvailableCurrencies({ availableCurrencies }))
     } catch (err) {
       logError(Errors._607, err.message)
