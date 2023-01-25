@@ -5,7 +5,7 @@ export const NODE_ENV = process.env.NODE_ENV
 export const IS_PRODUCTION = APP_ENV === 'production'
 export const DEFAULT_CHAIN_ID =
   process.env.REACT_APP_DEFAULT_CHAIN_ID ||
-  (IS_PRODUCTION ? CHAIN_ID.GTON : CHAIN_ID.GTON_OPTIMISM_TESTNET)
+  (IS_PRODUCTION ? CHAIN_ID.GTON : CHAIN_ID.GTON_TESTNET)
 export const PUBLIC_URL = process.env.PUBLIC_URL
 export const TX_SERVICE_VERSION = '1'
 export const INTERCOM_ID = IS_PRODUCTION

@@ -2246,10 +2246,10 @@
   dependencies:
     "@gnosis.pm/safe-core-sdk-types" "^1.0.0"
 
-"@gton-capital/safe-deployments@^1.16.1":
-  version "1.16.1"
-  resolved "https://registry.yarnpkg.com/@gton-capital/safe-deployments/-/safe-deployments-1.16.1.tgz#66a3243dd4c4ae77005418b85cad6fe540c6ba05"
-  integrity sha512-xz0qlRP+KjzGADaddkE6OD6/ePKHGECmeAVm3TkT5bNpC4zPddkf+szHFbVylrOTRFzvIFFocST2KLt6D2f3Gg==
+"@gton-capital/safe-deployments@^1.16.2":
+  version "1.16.2"
+  resolved "https://registry.yarnpkg.com/@gton-capital/safe-deployments/-/safe-deployments-1.16.2.tgz#515a21e1ca6aac855e8f6130f171a14fc9fe01f2"
+  integrity sha512-jiPQuwcpnGC8M8Nb8qAJOjswkBREuSVeueACYrSK/JydtiEV1zPL8RJWWV/1xJ5eGHb5/beNNwiCDq0EvFJjNw==
   dependencies:
     semver "^7.3.7"
 

@@ -14,7 +14,7 @@ export const CHAIN_ID: Record<ChainName, ChainId> = {
   RINKEBY: '4',
   VOLTA: '73799',
   GTON: '1000',
-  GTON_OPTIMISM_TESTNET: '50022',
+  GTON_TESTNET: '50021',
 }
 
 // Values match that required of onboard and returned by CGW
