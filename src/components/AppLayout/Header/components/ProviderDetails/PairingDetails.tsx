@@ -7,10 +7,11 @@ import { Link } from '@gnosis.pm/safe-react-components'
 import QRCode from 'qrcode.react'
 
 import Paragraph from 'src/components/layout/Paragraph'
-import { getPairingUri, initPairing, isPairingModule } from 'src/logic/wallets/pairing/utils'
-import { OVERVIEW_EVENTS } from 'src/utils/events/overview'
-import Track from 'src/components/Track'
-import AppstoreButton from 'src/components/AppstoreButton'
+import {
+  getPairingUri,
+  initPairing,
+  isPairingModule,
+} from 'src/logic/wallets/pairing/utils'
 import { Divider } from '@material-ui/core'
 
 const QR_DIMENSION = 120
@@ -65,7 +66,9 @@ type PairingDetailsProps = {
   vertical?: boolean
 }
 
-const PairingDetails = ({ vertical = false }: PairingDetailsProps): ReactElement => {
+const PairingDetails = ({
+  vertical = false,
+}: PairingDetailsProps): ReactElement => {
   const [uri, setUri] = useState<string | undefined>(getPairingUri())
   const isPairingLoaded = isPairingModule()
 
@@ -80,7 +83,11 @@ const PairingDetails = ({ vertical = false }: PairingDetailsProps): ReactElement
         <QRCode
           value={uri}
           includeMargin
-          imageSettings={{ src: './resources/logo-white-bg.png', width: 30, height: 30 }}
+          imageSettings={{
+            src: './resources/logo-white-bg.png',
+            width: 30,
+            height: 30,
+          }}
         />
       ) : isPairingLoaded ? (
         <Skeleton variant="rect" width={QR_DIMENSION} height={QR_DIMENSION} />
@@ -97,15 +104,12 @@ const PairingDetails = ({ vertical = false }: PairingDetailsProps): ReactElement
   const content = (
     <StyledContent>
       <Paragraph size="sm">
-        Scan this code in the Safe mobile app to sign transactions with your mobile device.{' '}
+        Scan this code in the Safe mobile app to sign transactions with your
+        mobile device.{' '}
         <Link href="https://help.gnosis-safe.io/en/articles/5584901-desktop-pairing">
           Learn more about this feature.
         </Link>
       </Paragraph>
-
-      <Track {...OVERVIEW_EVENTS.IPHONE_APP_BUTTON}>
-        <AppstoreButton placement="pairing" />
-      </Track>
     </StyledContent>
   )
 

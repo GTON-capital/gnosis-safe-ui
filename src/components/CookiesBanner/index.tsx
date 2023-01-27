@@ -5,16 +5,24 @@ import { Fragment, ReactElement, useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Button from 'src/components/layout/Button'
 import Link from 'src/components/layout/Link'
-import { COOKIES_KEY, BannerCookiesType, COOKIE_IDS, COOKIE_ALERTS } from 'src/logic/cookies/model/cookie'
-import { closeCookieBanner, openCookieBanner } from 'src/logic/cookies/store/actions/openCookieBanner'
+import {
+  COOKIES_KEY,
+  BannerCookiesType,
+  COOKIE_IDS,
+  COOKIE_ALERTS,
+} from 'src/logic/cookies/model/cookie'
+import {
+  closeCookieBanner,
+  openCookieBanner,
+} from 'src/logic/cookies/store/actions/openCookieBanner'
 import { cookieBannerState } from 'src/logic/cookies/store/selectors'
 import { loadFromCookie, saveCookie } from 'src/logic/cookies/utils'
 import { mainFontFamily, md, primary, screenSm } from 'src/theme/variables'
-import { closeIntercom, isIntercomLoaded, loadIntercom } from 'src/utils/intercom'
 import AlertRedIcon from './assets/alert-red.svg'
-import IntercomIcon from './assets/intercom.png'
-import { useSafeAppUrl } from 'src/logic/hooks/useSafeAppUrl'
-import { loadGoogleTagManager, unloadGoogleTagManager } from 'src/utils/googleTagManager'
+import {
+  loadGoogleTagManager,
+  unloadGoogleTagManager,
+} from 'src/utils/googleTagManager'
 import { loadBeamer, unloadBeamer } from 'src/utils/beamer'
 
 const isDesktop = process.env.REACT_APP_BUILD_FOR_DESKTOP
@@ -83,13 +91,19 @@ const useStyles = makeStyles({
 } as any)
 
 const CookiesBannerForm = (props: {
-  onSubmit: (formNecessary: boolean, formSupportAndUpdates: boolean, formAnalytics: boolean) => void
+  onSubmit: (
+    formNecessary: boolean,
+    formSupportAndUpdates: boolean,
+    formAnalytics: boolean,
+  ) => void
   cookiesNecessary: boolean
   cookiesAnalytics: boolean
   cookiesSupportAndUpdates: boolean
 }): ReactElement => {
   const [formNecessary, setFormNecessary] = useState(props.cookiesNecessary)
-  const [formSupportAndUpdates, setFormSupportAndUpdates] = useState(props.cookiesSupportAndUpdates)
+  const [formSupportAndUpdates, setFormSupportAndUpdates] = useState(
+    props.cookiesSupportAndUpdates,
+  )
   const [formAnalytics, setFormAnalytics] = useState(props.cookiesAnalytics)
   const { key } = useSelector(cookieBannerState)
   const classes = useStyles()
@@ -119,13 +133,14 @@ const CookiesBannerForm = (props: {
           </div>
         )}
         <p className={classes.text}>
-          We use cookies to provide you with the best experience and to help improve our website and application. Please
-          read our{' '}
+          We use cookies to provide you with the best experience and to help
+          improve our website and application. Please read our{' '}
           <Link className={classes.link} to="https://gnosis-safe.io/cookie">
             Cookie Policy
           </Link>{' '}
-          for more information. By clicking &quot;Accept all&quot;, you agree to the storing of cookies on your device
-          to enhance site navigation, analyze site usage and provide customer support.
+          for more information. By clicking &quot;Accept all&quot;, you agree to
+          the storing of cookies on your device to enhance site navigation,
+          analyze site usage and provide customer support.
         </p>
         <div className={classes.form}>
           <div className={classes.formItem}>
@@ -158,12 +173,24 @@ const CookiesBannerForm = (props: {
             />
           </div>
           <div className={classes.formItem}>
-            <Button color="primary" component={Link} minWidth={180} onClick={onAccept} variant="outlined">
+            <Button
+              color="primary"
+              component={Link}
+              minWidth={180}
+              onClick={onAccept}
+              variant="outlined"
+            >
               Accept selection
             </Button>
           </div>
           <div className={classes.formItem}>
-            <Button color="primary" component={Link} minWidth={180} onClick={onAcceptAll} variant="contained">
+            <Button
+              color="primary"
+              component={Link}
+              minWidth={180}
+              onClick={onAcceptAll}
+              variant="contained"
+            >
               Accept all
             </Button>
           </div>
@@ -173,37 +200,17 @@ const CookiesBannerForm = (props: {
   )
 }
 
-const FakeIntercomButton = ({ onClick }: { onClick: () => void }): ReactElement => {
-  return (
-    <img
-      alt="Open Intercom"
-      style={{
-        position: 'fixed',
-        cursor: 'pointer',
-        height: '80px',
-        width: '80px',
-        bottom: '8px',
-        right: '10px',
-        zIndex: 1000,
-        boxShadow: '1px 2px 10px 0 var(rgba(40, 54, 61, 0.18))',
-      }}
-      src={IntercomIcon}
-      onClick={onClick}
-    />
-  )
-}
-
 const CookiesBanner = isDesktop
   ? Fragment
   : (): ReactElement => {
       const dispatch = useDispatch()
 
       const [localNecessary, setLocalNecessary] = useState(true)
-      const [localSupportAndUpdates, setLocalSupportAndUpdates] = useState(false)
+      const [localSupportAndUpdates, setLocalSupportAndUpdates] =
+        useState(false)
       const [localAnalytics, setLocalAnalytics] = useState(false)
 
       const { cookieBannerOpen } = useSelector(cookieBannerState)
-      const isSafeAppView = !!useSafeAppUrl().getAppUrl()
 
       const openBanner = useCallback(
         (key?: COOKIE_IDS): void => {
@@ -246,7 +253,11 @@ const CookiesBanner = isDesktop
         cookiesAnalytics: boolean,
       ): void => {
         closeBanner()
-        saveNewCookieState(cookiesNecessary, cookiesSupportAndUpdates, cookiesAnalytics)
+        saveNewCookieState(
+          cookiesNecessary,
+          cookiesSupportAndUpdates,
+          cookiesAnalytics,
+        )
 
         setLocalNecessary(cookiesNecessary)
         setLocalAnalytics(cookiesAnalytics)
@@ -263,29 +274,26 @@ const CookiesBanner = isDesktop
           return
         }
 
-        const { acceptedNecessary, acceptedSupportAndUpdates, acceptedAnalytics } = cookiesState
+        const {
+          acceptedNecessary,
+          acceptedSupportAndUpdates,
+          acceptedAnalytics,
+        } = cookiesState
 
         setLocalNecessary(acceptedNecessary)
         setLocalSupportAndUpdates(acceptedSupportAndUpdates)
         setLocalAnalytics(acceptedAnalytics)
-      }, [setLocalNecessary, setLocalSupportAndUpdates, setLocalAnalytics, openBanner])
+      }, [
+        setLocalNecessary,
+        setLocalSupportAndUpdates,
+        setLocalAnalytics,
+        openBanner,
+      ])
 
       // Load or unload GTM depending on user choice
       useEffect(() => {
         localAnalytics ? loadGoogleTagManager() : unloadGoogleTagManager()
       }, [localAnalytics])
-
-      // Toggle Intercom
-      useEffect(() => {
-        if (isSafeAppView || !localSupportAndUpdates) {
-          isIntercomLoaded() && closeIntercom()
-          return
-        }
-
-        if (!isSafeAppView && localSupportAndUpdates) {
-          !isIntercomLoaded() && loadIntercom()
-        }
-      }, [localSupportAndUpdates, isSafeAppView])
 
       // Toggle Beamer
       useEffect(() => {
@@ -294,12 +302,6 @@ const CookiesBanner = isDesktop
 
       return (
         <>
-          {/* A fake Intercom button before Intercom is loaded */}
-          {!localSupportAndUpdates && !isSafeAppView && (
-            <FakeIntercomButton onClick={() => openBanner(COOKIE_IDS.INTERCOM)} />
-          )}
-
-          {/* The cookie banner itself */}
           {cookieBannerOpen && (
             <CookiesBannerForm
               cookiesNecessary={localNecessary}

@@ -4,7 +4,11 @@ import { estimateGasForDeployingSafe } from 'src/logic/contracts/safeContracts'
 import { fromTokenUnit } from 'src/logic/tokens/utils/humanReadableValue'
 import { formatAmount } from 'src/logic/tokens/utils/formatAmount'
 
-import { calculateGasPrice, getFeesPerGas, setMaxPrioFeePerGas } from 'src/logic/wallets/ethTransactions'
+import {
+  calculateGasPrice,
+  getFeesPerGas,
+  setMaxPrioFeePerGas,
+} from 'src/logic/wallets/ethTransactions'
 import { userAccountSelector } from '../wallets/store/selectors'
 import { getNativeCurrency } from 'src/config'
 import { isMaxFeeParam } from 'src/logic/safe/transactions/gas'
@@ -31,13 +35,23 @@ const estimateGas = async (
   addresses: string[],
 ): Promise<SafeCreationEstimationResult> => {
   const [gasEstimation, gasPrice, feesPerGas] = await Promise.all([
-    estimateGasForDeployingSafe(addresses, numOwners, userAccount, safeCreationSalt),
+    estimateGasForDeployingSafe(
+      addresses,
+      numOwners,
+      userAccount,
+      safeCreationSalt,
+    ),
     calculateGasPrice(),
-    isMaxFeeParam() ? getFeesPerGas() : { maxPriorityFeePerGas: 0, maxFeePerGas: 0 },
+    isMaxFeeParam()
+      ? getFeesPerGas()
+      : { maxPriorityFeePerGas: 0, maxFeePerGas: 0 },
   ])
 
   const estimatedGasCosts = gasEstimation * parseInt(gasPrice, 10)
-  const maxPrioFeePerGas = setMaxPrioFeePerGas(feesPerGas.maxPriorityFeePerGas, parseInt(gasPrice, 10))
+  const maxPrioFeePerGas = setMaxPrioFeePerGas(
+    feesPerGas.maxPriorityFeePerGas,
+    parseInt(gasPrice, 10),
+  )
   const nativeCurrency = getNativeCurrency()
   const gasCost = fromTokenUnit(estimatedGasCosts, nativeCurrency.decimals)
   const gasCostFormatted = formatAmount(gasCost)
@@ -57,14 +71,15 @@ export const useEstimateSafeCreationGas = ({
   numOwners,
   safeCreationSalt,
 }: EstimateSafeCreationGasProps): SafeCreationEstimationResult => {
-  const [gasEstimation, setGasEstimation] = useState<SafeCreationEstimationResult>({
-    gasEstimation: 0,
-    gasCostFormatted: '> 0.001',
-    gasLimit: 0,
-    gasPrice: '0',
-    gasMaxPrioFee: 0,
-    gasMaxPrioFeeFormatted: '0',
-  })
+  const [gasEstimation, setGasEstimation] =
+    useState<SafeCreationEstimationResult>({
+      gasEstimation: 0,
+      gasCostFormatted: '> 0.001',
+      gasLimit: 0,
+      gasPrice: '0',
+      gasMaxPrioFee: 0,
+      gasMaxPrioFeeFormatted: '0',
+    })
   const userAccount = useSelector(userAccountSelector)
   // Serialize the addresses array so that it doesn't trigger the effect due to the dependencies
   const addressesSerialized = JSON.stringify(addresses)
@@ -75,7 +90,9 @@ export const useEstimateSafeCreationGas = ({
       return
     }
 
-    estimateGas(userAccount, numOwners, safeCreationSalt, addressesList)?.then(setGasEstimation)
+    estimateGas(userAccount, numOwners, safeCreationSalt, addressesList)?.then(
+      setGasEstimation,
+    )
   }, [numOwners, safeCreationSalt, addressesSerialized, userAccount])
 
   return gasEstimation

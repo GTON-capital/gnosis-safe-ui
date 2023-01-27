@@ -19,7 +19,13 @@ export type SafeTxGasEstimationProps = {
 }
 
 export const estimateSafeTxGas = async (
-  { safeAddress, txData, txRecipient, txAmount, operation }: SafeTxGasEstimationProps,
+  {
+    safeAddress,
+    txData,
+    txRecipient,
+    txAmount,
+    operation,
+  }: SafeTxGasEstimationProps,
   safeVersion: string,
 ): Promise<string> => {
   if (hasFeature(FEATURES.SAFE_TX_GAS_OPTIONAL, safeVersion)) {
@@ -75,7 +81,18 @@ export const estimateGasForTransactionExecution = async ({
   sender,
 }: TxArgs & { safeAddress: string }): Promise<number> => {
   const estimationData = safeInstance.methods
-    .execTransaction(to, valueInWei, data, operation, safeTxGas, baseGas, gasPrice, gasToken, refundReceiver, sigs)
+    .execTransaction(
+      to,
+      valueInWei,
+      data,
+      operation,
+      safeTxGas,
+      baseGas,
+      gasPrice,
+      gasToken,
+      refundReceiver,
+      sigs,
+    )
     .encodeABI()
 
   return calculateGasOf({
@@ -101,7 +118,18 @@ export const checkTransactionExecution = async ({
   gasLimit,
 }: TxArgs & { gasLimit: string | undefined }): Promise<boolean> => {
   return safeInstance.methods
-    .execTransaction(to, valueInWei, data, operation, safeTxGas, baseGas, gasPrice, gasToken, refundReceiver, sigs)
+    .execTransaction(
+      to,
+      valueInWei,
+      data,
+      operation,
+      safeTxGas,
+      baseGas,
+      gasPrice,
+      gasToken,
+      refundReceiver,
+      sigs,
+    )
     .call({
       from: sender,
       gas: gasLimit,
@@ -119,7 +147,10 @@ export const isMaxFeeParam = (): boolean => {
 
 export const createSendParams = (
   from: string,
-  txParams: Pick<TxParameters, 'ethGasLimit' | 'ethNonce' | 'ethMaxPrioFeeInGWei' | 'ethGasPriceInGWei'>,
+  txParams: Pick<
+    TxParameters,
+    'ethGasLimit' | 'ethNonce' | 'ethMaxPrioFeeInGWei' | 'ethGasPriceInGWei'
+  >,
 ): PayableTx => {
   const sendParams: PayableTx = {
     from,
